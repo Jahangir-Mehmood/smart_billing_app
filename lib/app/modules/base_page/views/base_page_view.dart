@@ -1,5 +1,6 @@
 import 'package:smart_billing_app/constant/import.dart';
 import 'package:smart_billing_app/domain/Widgets/appbar/appbar.dart';
+import 'package:smart_billing_app/domain/Widgets/appdrawer/appdrawer.dart';
 
 class BasePageView extends StatelessWidget {
   const BasePageView({
@@ -10,6 +11,15 @@ class BasePageView extends StatelessWidget {
     this.showAppBar = true,
     this.showDrawer = false,
     this.showBottomNav = true,
+
+    this.appBarColor,
+    this.appBarHeight = 60,
+    this.textColor,
+
+    this.showBackArrow = false,
+    this.actions,
+    this.currentIndex = 1,
+    this.onBottomTap,
   });
 
   final String title;
@@ -19,46 +29,40 @@ class BasePageView extends StatelessWidget {
   final bool showDrawer;
   final bool showBottomNav;
 
-  BottomTab get _currentTab {
-    final route = Get.currentRoute;
+  final Color? appBarColor;
+  final double appBarHeight;
+  final Color? textColor;
 
-    if (route.startsWith('/bills')) {
-      return BottomTab.bills;
-    } else if (route.startsWith('/settings')) {
-      return BottomTab.settings;
-    }
-    return BottomTab.dashboard; // default
-  }
+  final bool showBackArrow;
+  final List<Widget>? actions;
 
-  int get _currentIndex => _currentTab.index;
-
-  void _onBottomTap(int index) {
-    final tab = BottomTab.values[index];
-
-    switch (tab) {
-      case BottomTab.bills:
-        Get.offAllNamed('/bills');
-        break;
-      case BottomTab.dashboard:
-        Get.offAllNamed('/dashboard');
-        break;
-      case BottomTab.settings:
-        Get.offAllNamed('/settings');
-        break;
-    }
-  }
+  final int currentIndex;
+  final Function(int)? onBottomTap;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: showAppBar ? UAppBar(title: title) : null,
+      drawer: showDrawer ? const UAppDrawer() : null,
+
+      appBar: showAppBar
+          ? UAppBar(
+              title: title,
+              height: appBarHeight,
+              backgroundColor: appBarColor,
+              textColor: textColor,
+              showDrawer: showDrawer,
+              showBackArrow: showBackArrow && !showDrawer,
+              actions: actions,
+            )
+          : null,
 
       body: child,
 
       bottomNavigationBar: showBottomNav
           ? BottomNavigationBar(
-              currentIndex: _currentIndex,
-              onTap: _onBottomTap,
+              currentIndex: currentIndex,
+              onTap: onBottomTap,
+              type: BottomNavigationBarType.fixed,
               items: const [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.receipt_long),
@@ -77,12 +81,4 @@ class BasePageView extends StatelessWidget {
           : null,
     );
   }
-}
-
-
-
-enum BottomTab {
-  bills,
-  dashboard,
-  settings,
 }

@@ -8,6 +8,7 @@ class DashboardView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const BasePageView(
       title: 'Dashboard',
+      showDrawer: true,
       child: Center(
         child: Text('Dashboard Content'),
       ),
