@@ -1,9 +1,13 @@
 import 'package:get/get.dart';
+import 'package:smart_billing_app/app/modules/bottom_tabbar/controllers/bottom_tabbar_controller.dart';
 
 class BasePageController extends GetxController {
-  //TODO: Implement BasePageController
+final BottomTabbarController bottomTabbarController =
+      Get.put(BottomTabbarController());
+// final RxBool isVisible = RxBool(true);
+final RxBool showBottomBar = RxBool(true);
+  final RxBool showTopDesign = RxBool(true);
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -14,10 +18,4 @@ class BasePageController extends GetxController {
     super.onReady();
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

@@ -1,24 +1,56 @@
-import 'package:flutter/material.dart';
+import 'package:smart_billing_app/constant/import.dart';
+import 'package:smart_billing_app/domain/Widgets/appbar/appbar.dart';
+import 'package:smart_billing_app/domain/Widgets/appdrawer/appdrawer.dart';
 
-import 'package:get/get.dart';
+class BasePageView extends StatelessWidget {
+  const BasePageView({
+    super.key,
+    required this.title,
+    required this.child,
 
-import '../controllers/base_page_controller.dart';
+    this.showAppBar = true,
+    this.showDrawer = false,
 
-class BasePageView extends GetView<BasePageController> {
-  const BasePageView({super.key});
+    this.appBarColor,
+    this.appBarHeight = 60,
+    this.textColor,
+
+    this.showBackArrow = false,
+    this.actions,
+  });
+
+  final String title;
+  final Widget child;
+
+  final bool showAppBar;
+  final bool showDrawer;
+
+  final Color? appBarColor;
+  final double appBarHeight;
+  final Color? textColor;
+
+  final bool showBackArrow;
+  final List<Widget>? actions;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('BasePageView'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'BasePageView is working',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
+      drawer: showDrawer ? const UAppDrawer() : null,
+
+      appBar: showAppBar
+          ? UAppBar(
+              title: title,
+              height: appBarHeight,
+              backgroundColor: appBarColor,
+              textColor: textColor,
+
+              showDrawer: showDrawer,
+              showBackArrow: showBackArrow && !showDrawer,
+              actions: actions,
+            )
+          : null,
+
+      body: child,
     );
   }
 }
