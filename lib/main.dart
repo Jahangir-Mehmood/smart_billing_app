@@ -13,6 +13,8 @@ class MyApp extends StatelessWidget {
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
 
+      
+
       builder: (context, child) {
         RSize.init(context);
         return child ?? const SizedBox.shrink();

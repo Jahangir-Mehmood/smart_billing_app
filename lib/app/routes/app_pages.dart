@@ -87,7 +87,6 @@ class AppPages {
       binding: SignupBinding(),
     ),
 
-    /// ✅ Actual Screens
     GetPage(
       name: _Paths.HOME,
       page: () => const HomeView(),
