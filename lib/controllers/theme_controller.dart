@@ -1,37 +1,48 @@
-import 'package:smart_billing_app/constant/import.dart';
-import 'package:smart_billing_app/models/company_theme.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class ThemeController extends GetxController {
-  static ThemeController get to => Get.find();
+MaterialColor createMaterialColor(Color color) {
+  List<double> strengths = <double>[.05];
+  Map<int, Color> swatch = {};
+  final int r = color.red, g = color.green, b = color.blue;
 
-  final Rx<CompanyTheme> companyTheme = const CompanyTheme(
-    primary: Colors.blue,
-    secondary: Colors.blueAccent,
-    background: Colors.white,
-    text: Colors.black,
-  ).obs;
-
-  void setCompanyTheme(CompanyTheme theme) {
-    companyTheme.value = theme;
-    Get.changeTheme(_buildTheme(theme));
+  for (int i = 1; i < 10; i++) {
+    strengths.add(0.1 * i);
   }
 
-  ThemeData _buildTheme(CompanyTheme theme) {
-    return ThemeData(
-      primaryColor: theme.primary,
-      scaffoldBackgroundColor: theme.background,
-      appBarTheme: AppBarTheme(
-        backgroundColor: theme.primary,
-        foregroundColor: theme.text,
-      ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        selectedItemColor: theme.primary,
-        unselectedItemColor: Colors.grey,
-        backgroundColor: theme.background,
-      ),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: theme.primary,
-      ),
+  for (var strength in strengths) {
+    final double ds = 0.5 - strength;
+    swatch[(strength * 1000).round()] = Color.fromRGBO(
+      r + ((ds < 0 ? r : (255 - r)) * ds).round(),
+      g + ((ds < 0 ? g : (255 - g)) * ds).round(),
+      b + ((ds < 0 ? b : (255 - b)) * ds).round(),
+      1,
     );
   }
+  return MaterialColor(color.value, swatch);
+}
+
+class ThemeController extends GetxController {
+  Rx<MaterialColor> primaryColor = Colors.blue.obs;
+
+  void setPrimaryColor(MaterialColor color) {
+    primaryColor.value = color;
+  }
+
+  ThemeData get themeData => ThemeData(
+        primarySwatch: primaryColor.value,
+        appBarTheme: AppBarTheme(
+          backgroundColor: primaryColor.value,
+          iconTheme: IconThemeData(color: Colors.white),
+          titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+        ),
+        drawerTheme: DrawerThemeData(
+          backgroundColor: primaryColor.value.withOpacity(0.1),
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          selectedItemColor: primaryColor.value,
+          unselectedItemColor: Colors.grey,
+          backgroundColor: Colors.white,
+        ),
+      );
 }

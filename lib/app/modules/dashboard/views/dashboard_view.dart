@@ -6,13 +6,20 @@ class DashboardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const BasePageView(
+    return BasePageView(
       title: 'Dashboard',
       showDrawer: true,
-      child: Center(
-        child: Text('Dashboard Content'),
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemCount: 100,
+        itemBuilder: (context, index) {
+          return Card(
+            child: Column(children: [
+              
+            ])
+          );
+        },
       ),
     );
   }
 }
-
