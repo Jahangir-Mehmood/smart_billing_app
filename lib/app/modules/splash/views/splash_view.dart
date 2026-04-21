@@ -1,3 +1,4 @@
+import 'package:smart_billing_app/app/modules/base_page/views/base_page_view.dart';
 import 'package:smart_billing_app/constant/import.dart';
 
 import '../controllers/splash_controller.dart';
@@ -32,21 +33,6 @@ class SplashView extends GetView<SplashController> {
   Widget build(BuildContext context) {
     Get.put(SplashController());
 
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/splash/black_app_logo.png', height: cS(200), fit: BoxFit.fill),
-
-            SizedBox(height: cH(20)),
-            Text(
-              'Billing App',
-              style: TextStyle(fontSize: cF(24), fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-      ),
-    );
+    return BasePageView(title: 'SPLASH', child: Center(child: Text('SPLASH')));
   }
 }
